@@ -1,0 +1,25 @@
+
+.rotate {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.divider {
+    border-top: 1px solid #ccc;
+}
+
+.badge {
+    border-radius: 8px;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    line-height: 12px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    margin-bottom: 5px;
+    color: #fff;
+    border-radius: .875rem;
+}

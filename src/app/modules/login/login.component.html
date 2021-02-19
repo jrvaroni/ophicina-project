@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="card card-signup" data-background-color="orange">
+        <form class="form" [formGroup]="formUser" (ngSubmit)="onSubmit()">
+            <div class="card-header text-center">
+                <img class="w-25" src="../../../assets/image/logo/logo.png" />
+                <h3 class="card-title title-up">Entrar</h3>
+            </div>
+            <div class="card-body">
+                <div class="input-group no-border">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="now-ui-icons ui-1_email-85"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control" formControlName="email" placeholder="E-mail">
+                </div>
+                <div class="input-group no-border">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="now-ui-icons icofont-ui-password"></i>
+                        </span>
+                    </div>
+                    <input type="password" placeholder="Senha" formControlName="password" class="form-control">
+                </div>
+                <p *ngIf="error">Ocorreu um erro</p>
+                <!-- <div class="form-check form-check-sign">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox">
+                            <span class="form-check-sign"></span>
+                            Lembrar-me
+                        </label>
+                    </div>
+                </div> -->
+            </div>
+            <div class="card-footer text-center">
+                <button *ngIf="submitted" type="submit" class="btn btn-neutral btn-round btn-lg" disabled><i
+                        class="icofont-spinner-alt-6 rotaring"></i></button>
+                <button *ngIf="!submitted" type="submit" class="btn btn-neutral btn-round btn-lg">Logar</button>
+            </div>
+        </form>
+    </div>
+</div>

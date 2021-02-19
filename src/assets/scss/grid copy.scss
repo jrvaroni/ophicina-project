@@ -1,0 +1,221 @@
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+$grid-gutter-width:         30px !default;
+
+// Small screen / tablet
+$container-tablet:             (720px + $grid-gutter-width) !default;
+//** For `$screen-sm-min` and up.
+$container-sm:                 $container-tablet !default;
+
+// Medium screen / desktop
+$container-desktop:            (940px + $grid-gutter-width) !default;
+//** For `$screen-md-min` and up.
+$container-md:                 $container-desktop !default;
+
+// Large screen / wide desktop
+$container-large-desktop:      (1140px + $grid-gutter-width) !default;
+//** For `$screen-lg-min` and up.
+$container-lg:                 $container-large-desktop !default;
+
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+//** Deprecated `$screen-xs` as of v3.0.1
+$screen-xs:                  480px !default;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min:              $screen-xs !default;
+//** Deprecated `$screen-phone` as of v3.0.1
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+//** Deprecated `$screen-tablet` as of v3.0.1
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+//** Deprecated `$screen-md` as of v3.0.1
+$screen-md:                  992px !default;
+$screen-md-min:              $screen-md !default;
+//** Deprecated `$screen-desktop` as of v3.0.1
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg:                  1200px !default;
+$screen-lg-min:              $screen-lg !default;
+//** Deprecated `$screen-lg-desktop` as of v3.0.1
+$screen-lg-desktop:          $screen-lg-min !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+
+//== Grid system
+//
+//## Define your custom responsive grid.
+
+//** Number of columns in the grid.
+$grid-columns:              12 !default;
+//** Padding between columns. Gets divided in half for the left and right.
+$grid-gutter-width:         30px !default;
+// Navbar collapse
+//** Point at which the navbar becomes uncollapsed.
+$grid-float-breakpoint:     $screen-sm-min !default;
+//** Point at which the navbar begins collapsing.
+$grid-float-breakpoint-max: ($grid-float-breakpoint - 1) !default;
+
+// FLEXBOX CSS GRID
+// by Laptev Pavel
+
+// VARiABLES
+// desktop grid
+$grid-lg-columns: 12;
+$grid-lg-sideMargin: 80px;
+$grid-lg-gutter: 40px;
+$grid-lg-breakpoint: 1400px;
+
+// tablet grid
+$grid-md-columns: 12;
+$grid-md-sideMargin: 60px;
+$grid-md-gutter: 30px;
+$grid-md-breakpoint: 1020px;
+
+// mobile grid
+$grid-xs-columns: 4;
+$grid-xs-sideMargin: 32px;
+$grid-xs-gutter: 20px;
+$grid-xs-breakpoint: 620px;
+
+// pixels to % variables
+$lg-grid-width: 100% -
+  (($grid-lg-sideMargin * 2 / $grid-lg-breakpoint) * 100%);
+$md-grid-width: 100% -
+  (($grid-md-sideMargin * 2 / $grid-md-breakpoint) * 100%);
+$xs-grid-width: 100% -
+  (($grid-xs-sideMargin * 2 / $grid-xs-breakpoint) * 100%);
+
+$lg-gutter: (
+  (
+      $grid-lg-gutter /
+        ($grid-lg-breakpoint - ($grid-lg-sideMargin * 2))
+    ) * 100%
+);
+$md-gutter: (
+  (
+      $grid-md-gutter /
+        ($grid-md-breakpoint - ($grid-md-sideMargin * 2))
+    ) * 100%
+);
+$xs-gutter: (
+  (
+      $grid-xs-gutter /
+        ($grid-xs-breakpoint - ($grid-xs-sideMargin * 2))
+    ) * 100%
+);
+
+// FUNCTIONS AND MiXINS
+@function col-width($i, $columns) {
+  @return 100% / $columns * $i;
+}
+
+@mixin col-props($i, $columns, $gutter) {
+  box-sizing: border-box;
+  width: col-width($i, $columns);
+  padding-left: $gutter/2;
+  padding-right: $gutter/2;
+}
+
+@mixin columns-loop($name, $columns, $gutter) {
+  @for $i from 0 through $columns {
+    &-#{$name}-#{$i} {
+      @include col-props($i, $columns, $gutter);
+    }
+    &-#{$name}-shift-#{$i} {
+      margin-left: col-width($i, $columns);
+    }
+  }
+}
+
+@mixin grid-base($width) {
+  box-sizing: border-box;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  max-width: $grid-lg-breakpoint;
+  width: $width;
+}
+
+// CLASSES
+.container {
+  @include grid-base($lg-grid-width);
+  @media screen and (max-width: $grid-md-breakpoint) {
+    width: $md-grid-width;
+  }
+  @media screen and (max-width: $grid-xs-breakpoint) {
+    width: $xs-grid-width;
+  }
+  &-fluid {
+    @include grid-base(100%);
+  }
+}
+
+.col {
+  @include columns-loop(desk, $grid-lg-columns, $lg-gutter);
+  @media screen and (max-width: $grid-md-breakpoint) {
+    @include columns-loop(tab, $grid-md-columns, $md-gutter);
+  }
+  @media screen and (max-width: $grid-xs-breakpoint) {
+    @include columns-loop(mob, $grid-xs-columns, $xs-gutter);
+  }
+}
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    display: table; // 2
+    content: " "; // 1
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin container-fixed($gutter: $grid-gutter-width) {
+  padding-right: ceil(($gutter / 2));
+  padding-left: floor(($gutter / 2));
+  margin-right: auto;
+  margin-left: auto;
+  @include clearfix;
+}
+
+
+.container-fluid {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+
+.container {
+  @include container-fixed;
+
+  @media (min-width: $screen-sm-min) {
+    width: $container-sm;
+  }
+  @media (min-width: $screen-md-min) {
+    width: $container-md;
+  }
+  @media (min-width: $screen-lg-min) {
+    width: $container-lg;
+  }
+}

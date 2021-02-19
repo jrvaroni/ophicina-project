@@ -1,0 +1,82 @@
+<div class="box-form">
+    <h3 class="mb-3">Usuário</h3>
+    <form class="form_clientes" [formGroup]="formUser" (ngSubmit)="onSubmit()">
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('name') && form.name.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-user-alt-4"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="name" placeholder="Seu nome"
+                    [ngClass]="{ 'form-control-danger': isValidInput('name') && form.name.errors }">
+            </div>
+            <div *ngIf="isValidInput('name')" class="error-message">
+                <div *ngIf="form.name.errors.required">O campo nome é obrigatório</div>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('email') && form.email.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-ui-email"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="email" placeholder="E-mail"
+                    [ngClass]="{ 'form-control-danger': isValidInput('email') && form.email.errors }">
+            </div>
+            <div *ngIf="isValidInput('email')" class="error-message">
+                <div *ngIf="form.email.errors.required">O campo email é obrigatório</div>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('company') && form.company.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-wrench"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="company"
+                    placeholder="Nome da empresa"
+                    [ngClass]="{ 'form-control-danger': isValidInput('company') && form.company.errors }">
+            </div>
+            <div *ngIf="isValidInput('company')" class="error-message">
+                <div *ngIf="form.company.errors.required">O campo nome da empresa é obrigatório</div>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('tel') && form.tel.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-phone"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="tel" placeholder="Telefone"
+                    [mask]="maskPhone" (keyup)='maskEventPhone($event)'
+                    [ngClass]="{ 'form-control-danger': isValidInput('tel') && form.tel.errors }">
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('address') && form.address.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-address-book"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="address"
+                    placeholder="Endereço"
+                    [ngClass]="{ 'form-control-danger': isValidInput('address') && form.address.errors }">
+            </div>
+        </div>
+        <div class="align-items-end d-flex justify-content-between">
+            <div>
+                <button *ngIf="!submitted && enableEdit" type="submit" class="btn btn-round btn-primary mr-3"
+                    [disabled]="!formUser.valid">Cadastrar</button>
+                <button *ngIf="submitted && enableEdit" type="submit" class="btn btn-round btn-primary mr-3" disabled><i
+                        class="icofont-spinner-alt-6 rotaring"></i></button>
+                <button *ngIf="enableEdit" type="button" class="btn btn-primary btn-link btn-round"
+                    (click)="actionToDisabled()">Cancelar edição</button>
+
+                <button *ngIf="!enableEdit" type="submit" (click)="actionToEnable()"
+                    class="btn btn-round btn-primary mr-3">Habilitar edição</button>
+            </div>
+            <button type="button" class="btn btn-primary btn-outline-primary btn-round"
+                [routerLink]="['/']">voltar</button>
+        </div>
+    </form>
+</div>

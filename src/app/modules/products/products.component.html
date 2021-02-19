@@ -1,0 +1,80 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div *ngIf="products && products.length > 0">
+                <div class="filter">
+                    <div class="icon">
+                        <i class="icofont-search"></i>
+                    </div>
+                    <input type="text" placeholder="Pesquisar por..." [(ngModel)]="filter" />
+                </div>
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Nome do Produto</th>
+                            <th>Código do Produto</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="client-table">
+                        <tr *ngFor="let product of products | product:filter">
+                            <td data-label="Nome do Produto" class="align-left">
+                                {{ product?.name }}
+                            </td>
+                            <td data-label="Código do Produto">{{product?.cod}}</td>
+                            <td data-label="Valor">{{ product?.price | currency: "BRL":"R$ ":'1.2-2'}}</td>
+                            <td data-label="Quantidade">{{ product?.qtd }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-icon btn-round mr-4" placement="top"
+                                    ngbTooltip="Tooltip on top" (click)="edit(product)">
+                                    <i class="icofont-pencil-alt-2 now-ui-icons"></i>
+                                </button>
+                                <button class="btn btn-primary btn-icon btn-round" (click)="open(product)">
+                                    <i class="icofont-trash now-ui-icons"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="products && products.length === 0">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Nome do Produto</th>
+                            <th>Código do Produto</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="empty-box">
+                    <div class="icon">
+                        <i class="icofont-warning"></i>
+                    </div>
+                    Não encontramos nenhum produto.
+                </div>
+            </div>
+
+            <div class="ph-item" *ngIf="!products">
+                <div class="ph-col-12">
+                    <div class="ph-row">
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <a [routerLink]="['/products/register']" class="btn btn-primary btn-round">
+                Novo produto
+            </a>
+        </div>
+    </div>
+</section>

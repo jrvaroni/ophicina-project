@@ -1,0 +1,27 @@
+<nav>
+    <header class="header" [class.off-canvas]="visible">
+        <div class="toogle-canvas">
+            <button class="menu-canvas" (click)="toggle()"><i class="icofont-navigation-menu"></i></button>
+        </div>
+        <div class="logo"><img src="../../../assets/image/logo/logo.png" /></div>
+        <div class="nav-content">
+            <ul class="nav-items">
+                <li (click)="goToUser()"><i class="icofont-settings-alt"></i></li>
+                <li (click)="signOut()"><i class="icofont-logout"></i></li>
+            </ul>
+        </div>
+    </header>
+    <div [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse" *ngIf="isMobile">
+        <ul class="navbar-nav">
+            <li>
+                <a [routerLink]="['/']">Ordem de serviço</a>
+            </li>
+            <li>
+                <a [routerLink]="['/customers']">Clientes</a>
+            </li>
+            <li>
+                <a [routerLink]="['/products']">Produtos</a>
+            </li>
+        </ul>
+    </div>
+</nav>

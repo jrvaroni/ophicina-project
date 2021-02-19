@@ -1,0 +1,246 @@
+<div class="box-form" *ngIf="loadingForm">
+    <h3 class="mb-3">Cadastro de clientes</h3>
+    <form class="form_clientes" [formGroup]="formOrderService" (ngSubmit)="onSubmit()">
+        <div formGroupName="orderService">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icofont-user-alt-4"></i></span>
+                    </div>
+                    <ng-select [items]="customers" bindLabel="name" bindValue="id" placeholder="Selecione o cliente"
+                        clearAllText="Clear" autocomplete="off" formControlName="customerId">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group"
+                        [ngClass]="{ 'has-danger': formOrderService.controls.orderService.controls.openDate.errors && isValidInput('openDate') }">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" (click)="open.toggle()"><i
+                                        class="icofont-ui-calendar"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="Data de entrada" (click)="open.toggle()"
+                                [ngClass]="{ 'form-control-danger': formOrderService.controls.orderService.controls.openDate.errors && isValidInput('openDate') }"
+                                formControlName="openDate" class="form-control" ngbDatepicker #open="ngbDatepicker">
+                        </div>
+                        <div *ngIf="isValidInput('openDate')" class="error-message">
+                            <div *ngIf="formOrderService.controls.orderService.controls.openDate.errors.validatorError">
+                                Coloque uma data válida</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('closeDate') }">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" (click)="close.toggle()"><i
+                                        class="icofont-ui-calendar"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="Data de saída" (click)="close.toggle()"
+                                [ngClass]="{ 'form-control-danger': isValidInput('closeDate') }"
+                                formControlName="closeDate" class="form-control" ngbDatepicker #close="ngbDatepicker"
+                                placement="bottom-right">
+                        </div>
+                        <div *ngIf="isValidInput('closeDate')" class="error-message">
+                            <div
+                                *ngIf="formOrderService.controls.orderService.controls.closeDate.errors.validatorError">
+                                Coloque uma data válida</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-car-alt-1"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="Carro" class="form-control"
+                                formControlName="car">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-refrigerator rotate"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="Placa" class="form-control"
+                                formControlName="carLicensePlate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-road"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="KM entrada" class="form-control"
+                                formControlName="enterKm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-road"></i></span>
+                            </div>
+                            <input autocomplete="off" type="text" placeholder="Km saída" class="form-control"
+                                formControlName="exitedKm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" id="annotationClient" name="cli_annotation"
+                    placeholder="Se quiser, poderá fazer alguma anotação sobre o cliente..."
+                    formControlName="anotation"></textarea>
+            </div>
+        </div>
+
+        <div class="divider w-100 pt-3">
+            <h4>Serviços Realizado</h4>
+            <div class="d-flex justify-content-between mt-2 mb-3">
+                <button type="button" class="btn btn-outline-warning btn-round" (click)="addProduct()">Adicionar
+                    produto</button>
+                <button type="button" class="btn btn-outline-warning btn-round" (click)="addService()">Adicionar
+                    serviço</button>
+            </div>
+            <div *ngFor="let product of productFormGroups; let i = index">
+                <div class="form-group" [formGroup]="product">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="input-group align-items-center">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icofont-box"></i></span>
+                                </div>
+                                <ng-select formControlName="id" placeholder="Selecione o produto"
+                                    notFoundText="Não encontramos esse produto" clearAllText="Clear" autocomplete="off"
+                                    (change)="changedValue($event, i)" bindLabel="name">
+                                    <ng-option *ngFor="let product of products" [value]="product.id">
+                                        {{product.name}}
+                                    </ng-option>
+                                </ng-select>
+                                <button type="button" class="btn btn-primary btn-icon btn-round ml-4"
+                                    (click)="removeProduct(i)"><i class="icofont-close-line"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icofont-dice-multiple"></i></span>
+                                    </div>
+                                    <input autocomplete="off" type="text" placeholder="Quantidade" formControlName="qtd"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icofont-dollar"></i></span>
+                                    </div>
+                                    <input autocomplete="off" type="text" placeholder="Valor unitário"
+                                        formControlName="unitPrice" mask="separator.2" [thousandSeparator]="'.'"
+                                        [decimalMarker]="','" [dropSpecialCharacters]="true"
+                                        [prefix]="checkEmptyValue('product', i) ? 'R$ ' : ''" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider w-100"></div>
+                </div>
+            </div>
+
+            <div *ngFor="let service of serviceFormGroups; let i = index">
+                <div class="form-group" [formGroup]="service">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icofont-list"></i></span>
+                                    </div>
+                                    <input autocomplete="off" type="text" placeholder="Descreva o serviço"
+                                        formControlName="anotation" class="form-control">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-8">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icofont-dollar"></i></span>
+                                    </div>
+                                    <input autocomplete="off" type="text" mask="separator.2" [thousandSeparator]="'.'"
+                                        placeholder="Valor do serviço" [decimalMarker]="','"
+                                        [dropSpecialCharacters]="true"
+                                        [prefix]="checkEmptyValue('service', i) ? 'R$ ' : ''" formControlName="value"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-4 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary btn-icon btn-round ml-4"
+                                (click)="removeService(i)"><i class="icofont-close-line"></i></button>
+                        </div>
+                    </div>
+                    <div class="divider w-100"></div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="pt-4 pb-5">
+            <h4>Status do pagamento</h4>
+            <div formGroupName="orderService" class="align-items-center d-flex justify-content-between">
+                <div class="form-check form-check-radio">
+                    <label class="form-check-label mr-4">
+                        <input class="form-check-input" type="radio" name="status" [value]="true"
+                            formControlName="status">
+                        <span class="form-check-sign"></span>
+                        Pago
+                    </label>
+
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="status" [value]="false"
+                            formControlName="status">
+                        <span class="form-check-sign"></span>
+                        Não pago
+                    </label>
+                </div>
+                <span class="badge badge-neutral">Total: {{ getTotalValue() | currency: "BRL":"R$ ":'1.2-2' }}</span>
+            </div>
+
+        </div>
+
+        <button *ngIf="!submitted" type="submit" class="btn btn-round btn-primary mr-3"
+            [disabled]="!formOrderService.valid">Cadastrar</button>
+        <button *ngIf="submitted" type="submit" class="btn btn-round btn-primary mr-3" disabled><i
+                class="icofont-spinner-alt-6 rotaring"></i></button>
+        <button type="button" class="btn btn-primary btn-outline-primary btn-round"
+            [routerLink]="['/order-service']">Voltar</button>
+    </form>
+
+</div>

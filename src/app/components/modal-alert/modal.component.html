@@ -1,0 +1,17 @@
+<div class="modal-header text-center">
+    <div class="w-100">
+        <div class="h3 mb-0"><i class="icofont-warning "></i></div>
+        <h4 class="modal-title">Atenção</h4>
+    </div>
+</div>
+<div class="modal-body">
+    <p>
+        Você está prestes a excluir <span class="bold font-weight-bold text-primary">{{ item?.name }}</span>, esse
+        processo não
+        poderá ser desfeito, tem certeza que deseja continuar?
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-neutral" (click)="activeModal.close('cancel')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="activeModal.close('exclude')">Excluir</button>
+</div>

@@ -1,0 +1,93 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div *ngIf="orderService && orderService.length > 0">
+                <div class="filter">
+                    <input type="text" placeholder="Pesquisar por..." [(ngModel)]="filter" />
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-link btn-neutral" id="dropdownBasic1" ngbDropdownToggle>Filtrar por:
+                            {{ filterOpt }}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem (click)="changeFilter(1)">Pagos</button>
+                            <button ngbDropdownItem (click)="changeFilter(0)">Em aberto</button>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Cliente</th>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="client-table">
+                        <tr *ngFor="let item of orderService | customer:filter:'order'">
+                            <td data-label="Cliente" class="align-left">
+                                {{item?.customer?.name}}
+                            </td>
+                            <td data-label="Data">{{ item?.openDate | date:'dd-MM-yyyy' }}</td>
+                            <td data-label="Valor">{{ item?.totalValue | currency: "BRL":"R$ ":'1.2-2' }}</td>
+                            <td data-label="Status">{{ item?.status ? 'Pago' : 'Em aberto' }}</td>
+                            <td><button class="btn btn-link btn-primary" (click)="openDetail(item)">Detalhes</button>
+                            </td>
+                            <td><button class="btn btn-link btn-primary"
+                                    (click)="openDetail(item, 'closeOrder')">Fechar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="orderService && orderService.length === 0">
+                <div class="filter">
+                    <input type="text" placeholder="Pesquisar por..." [(ngModel)]="filter" />
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-link btn-neutral" id="dropdownBasic1" ngbDropdownToggle>Filtrar por:
+                            {{ filterOpt }}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem (click)="changeFilter(1)">Pagos</button>
+                            <button ngbDropdownItem (click)="changeFilter(0)">Em aberto</button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Cliente</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="empty-box">
+                    <div class="icon">
+                        <i class="icofont-warning"></i>
+                    </div>
+                    Não encontramos nenhuma ordem de serviço.
+                </div>
+            </div>
+
+            <div class="ph-item" *ngIf="!orderService">
+                <div class="ph-col-12">
+                    <div class="ph-row">
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <a [routerLink]="['/register']" class="btn btn-primary btn-round">
+                Nova ordem de serviço
+            </a>
+        </div>
+    </div>
+</section>

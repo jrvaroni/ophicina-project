@@ -1,0 +1,90 @@
+<div class="box-form" *ngIf="loading">
+    <h3 class="mb-3">{{customerId ? 'Editar cliente' : 'Cadastro de clientes' }}</h3>
+    <form class="form_clientes" [formGroup]="formCustomer" (ngSubmit)="onSubmit()">
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('name') && form.document.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-user-alt-4"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control form-uppercase" formControlName="name"
+                    placeholder="Nome e sobrenome"
+                    [ngClass]="{ 'form-control-danger': isValidInput('document') && form.document.errors }">
+            </div>
+            <div *ngIf="isValidInput('name')" class="error-message">
+                <div *ngIf="form.name.errors.required">O campo nome é obrigatório</div>
+                <div *ngIf="form.name.errors.validatorError">Deve conter pelo menos nome e sobrenome</div>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('document') && form.document.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-id-card"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="document"
+                    [ngClass]="{ 'form-control-danger': isValidInput('document') && form.document.errors }"
+                    [mask]="maskCpf" (keyup)='maskEvent($event)' [showMaskTyped]="false" placeholder="CPF ou CNPJ">
+            </div>
+            <div *ngIf="isValidInput('document')" class="error-message">
+                <div *ngIf="form.document.errors.validatorError">Por favor, coloque um cpf ou cnpj válido.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-phone"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" [patterns]="onlyNumber" [mask]="maskPhone"
+                    (keyup)='maskEventPhone($event)' formControlName="tel" placeholder="Telefone">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-phone"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" [patterns]="onlyNumber" [mask]="maskPhone"
+                    (keyup)='maskEventPhone($event)' formControlName="tel2" placeholder="Telefone 2">
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-danger': isValidInput('email') && form.email.errors }">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-ui-email"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="email" placeholder="E-mail"
+                    [ngClass]="{ 'form-control-danger': isValidInput('email') && form.email.errors }"
+                    patterns="emailParttner">
+            </div>
+            <div *ngIf="isValidInput('email')" class="error-message">
+                <div *ngIf="form.email.errors.validatorError">Por favor, coloque um e-mail válido.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icofont-address-book"></i></span>
+                </div>
+                <input autocomplete="off" type="text" class="form-control" formControlName="address"
+                    placeholder="Endereço">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <textarea class="form-control" id="annotationClient" name="cli_annotation"
+                placeholder="Se quiser, poderá fazer alguma anotação sobre o cliente..."
+                formControlName="anotation"></textarea>
+        </div>
+        <button *ngIf="!submitted" type="submit" class="btn btn-round btn-primary mr-3"
+            [disabled]="!formCustomer.valid">Cadastrar</button>
+        <button *ngIf="submitted" type="submit" class="btn btn-round btn-primary mr-3" disabled><i
+                class="icofont-spinner-alt-6 rotaring"></i></button>
+        <button type="button" class="btn btn-primary btn-outline-primary btn-round"
+            [routerLink]="['/customers']">Voltar</button>
+    </form>
+</div>

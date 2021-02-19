@@ -1,0 +1,7 @@
+<app-header (offCanvas)="offCanvas($event)" [isMobile]="isMobile" *ngIf="isLoggedIn"></app-header>
+<app-aside-menu [canvas]="canvas" *ngIf="isLoggedIn && !isMobile"></app-aside-menu>
+<main class="container-fluid fade-animation" [class.off-canvas]="canvas && !isMobile">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <router-outlet class="row"></router-outlet>
+    </div>
+</main>

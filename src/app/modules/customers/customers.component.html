@@ -1,0 +1,84 @@
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div *ngIf="customers && customers.length > 0">
+                <div class="filter">
+                    <div class="icon">
+                        <i class="icofont-search"></i>
+                    </div>
+                    <input type="text" placeholder="Pesquisar por..." [(ngModel)]="filter" />
+                </div>
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Nome</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Telefone</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="client-table">
+                        <tr *ngFor="let customer of customers | customer:filter">
+                            <td data-label="Nome" class="align-left">{{customer?.name}}</td>
+                            <td data-label="CPF/CNPJ">
+                                {{ customer?.document | mask: maskCpf(customer?.document) }}
+                            </td>
+                            <td data-label="Telefone">
+                                <ng-container *ngIf="customer?.tel">{{ customer?.tel | mask: maskPhone(customer?.tel) }}
+                                </ng-container>
+                                <ng-container *ngIf="customer?.tel && customer?.tel2">-</ng-container>
+                                <ng-container *ngIf="customer?.tel2">
+                                    {{ customer?.tel2 | mask: maskPhone(customer?.tel2) }}
+                                </ng-container>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-icon btn-round mr-4" placement="top"
+                                    ngbTooltip="Tooltip on top" (click)="edit(customer)">
+                                    <i class="icofont-pencil-alt-2 now-ui-icons"></i>
+                                </button>
+                                <button class="btn btn-primary btn-icon btn-round" (click)="open(customer)">
+                                    <i class="icofont-trash now-ui-icons"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="customers && customers.length === 0">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th class="align-left">Nome</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Telefone</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="empty-box">
+                    <div class="icon">
+                        <i class="icofont-warning"></i>
+                    </div>
+                    Não encontramos nenhum cliente.
+                </div>
+            </div>
+
+            <div class="ph-item" *ngIf="!customers">
+                <div class="ph-col-12">
+                    <div class="ph-row">
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                        <div class="ph-col-12 higgest"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <a [routerLink]="['/customers/register']" class="btn btn-primary btn-round">
+                Novo cliente
+            </a>
+        </div>
+    </div>
+</section>

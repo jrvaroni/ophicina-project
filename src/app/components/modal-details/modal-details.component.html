@@ -1,0 +1,123 @@
+<div id="print-section">
+    <div class="modal-header text-center mb-1">
+        <div class="w-100">
+            <h3 class="modal-title h3 mb-0">{{ user?.company }}</h3>
+            <small>Telefone: {{ user?.tel | mask: maskPhone(user?.tel) }}</small>
+            <p>{{ user?.address }}</p>
+            <hr>
+        </div>
+    </div>
+    <div class="modal-body pt-1" *ngIf="orderService">
+        <div class="user-box">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="user-details">
+                        Nome: {{ orderService?.customer?.name }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="user-details">
+                        Endereço: {{ orderService?.customer?.address }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-details">
+                        Telefone: {{ orderService?.customer?.tel | mask: maskPhone(item?.customer?.tel) }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-details">
+                        Carro: {{ orderService?.car }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-details">
+                        Placa: {{ orderService?.carLicensePlate }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-details">
+                        Entrou com: {{ orderService?.enterKm }} Km
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-details">
+                        Saiu com: {{ orderService?.exitedKm }} Km
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="form-group color-fields">
+                    <legend>Detalhes do serviço</legend>
+                    <div class="d-flex justify-content-between">
+                        <span class="dstq-font mb-1">Entrada: {{ orderService?.openDate | date: 'dd/MM/yyyy' }}</span>
+                        <span class="dstq-font mb-1" *ngIf="orderService?.closeDate">Saída: {{ orderService?.closeDate |
+                            date: 'dd/MM/yyyy' }}</span>
+                    </div>
+
+                    <p>{{ orderService?.anotation }}</p>
+                    <p class="mt-2">O que foi feito:</p>
+                    <table class="table" *ngIf="orderService?.order_service_products.length > 0">
+                        <thead>
+                            <tr>
+                                <th colspan="4">Produtos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of orderService?.order_service_products">
+                                <td>{{ product?.prodName }}</td>
+                                <td><small>Qtd</small> {{ product?.prodQdt }}</td>
+                                <td class="little-tbl"><small> R$</small> {{ product?.prodUnitPrice | currency:
+                                    "BRL":"":'1.2-2' }}<small> un.</small></td>
+                                <td class="text-right"><small>R$</small> {{ sumItens(product?.prodQdt,
+                                    product?.prodUnitPrice) | currency:
+                                    "BRL":"":'1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table" *ngIf="orderService?.order_service_services.length > 0">
+                        <colgroup>
+                            <col span="1" style="width: 80%">
+                            <col span="2" style="width: 200px;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th colspan="2">Serviço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let service of orderService?.order_service_services">
+                                <td>{{ service?.anotation }}</td>
+                                <td class="text-right"><small>R$</small> {{
+                                    converterPrice(service?.servicePrice) |
+                                    currency: "BRL":"":'1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table><br>
+                    <div class="product-service">
+                        <hr>
+                        <div class="total-value text-right pr-2"><span class="total mr-5">Total </span>
+                            <small>R$</small> {{
+                            orderService?.totalValue |
+                            currency: "BRL":"":'1.2-2'}}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-neutral" (click)="activeModal.close('cancel')">Fechar</button>
+    <button *ngIf="!type" type="button" class="btn btn-primary"
+        [printTitle]="'Order de Serviço de '+ orderService?.customer?.name" printSectionId="print-section" ngxPrint
+        [useExistingCss]="true">Imprimir</button>
+    <button *ngIf="type === 'closeOrder'" type="button" class="btn btn-primary"
+        (click)="activeModal.close('closeOrder')">
+        {{ filterOpt == 'Pagos' ? 'Reabrir ordem' : 'Marcar como pago' }}
+    </button>
+</div>
