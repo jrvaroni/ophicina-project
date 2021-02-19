@@ -6,6 +6,7 @@ This is a project in Angular 10
 
 * Angular 10
 * angular/cli
+* PWA angular
 
 ## Getting Started
 
